@@ -3,6 +3,7 @@ package ru.netology;
 import ru.netology.RouteRepository;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class RouteManager {
 
@@ -16,7 +17,7 @@ public class RouteManager {
         repository.save(route);
     }
 
-    public Route[] findAll(String from, String to) {
+    public Route[] findAll(String from, String to, Comparator<Route> comparator) {
         Route[] result = new Route[repository.findAll().length];
         int counter = -1;
         for (Route route: repository.findAll()) {
@@ -37,6 +38,7 @@ public class RouteManager {
 
         if (resultWithoutNull.length > 1) {
             Arrays.sort(resultWithoutNull);
+            Arrays.sort(resultWithoutNull, comparator);
         }
 
         return resultWithoutNull;

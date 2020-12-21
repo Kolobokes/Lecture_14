@@ -2,6 +2,8 @@ package ru.netology;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Comparator;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class RouteManagerTest {
@@ -14,7 +16,10 @@ class RouteManagerTest {
         Route krasnodar = new Route(124, 1500,"DME", "KRR", 120);
         manager.add(moscow);
         manager.add(krasnodar);
-        Route[] actual = manager.findAll("ALG", "DME");
+
+        Comparator speedComparator = new RouteByTravelTimeAscComparator();
+
+        Route[] actual = manager.findAll("ALG", "DME", speedComparator);
 
         Route[] expected = new Route[1];
         expected[0] = moscow;
@@ -30,7 +35,10 @@ class RouteManagerTest {
         Route krasnodar = new Route(124, 1500,"ALG", "DME", 120);
         manager.add(moscow);
         manager.add(krasnodar);
-        Route[] actual = manager.findAll("ALG", "DME");
+
+        Comparator speedComparator = new RouteByTravelTimeAscComparator();
+
+        Route[] actual = manager.findAll("ALG", "DME", speedComparator);
 
         Route[] expected = new Route[2];
         expected[0] = krasnodar;
@@ -49,12 +57,39 @@ class RouteManagerTest {
         manager.add(moscow);
         manager.add(krasnodar);
         manager.add(spb);
-        Route[] actual = manager.findAll("ALG", "DME");
+
+        Comparator speedComparator = new RouteByTravelTimeAscComparator();
+
+        Route[] actual = manager.findAll("ALG", "DME", speedComparator);
 
         Route[] expected = new Route[3];
-        expected[0] = moscow;
+        expected[0] = spb;
         expected[1] = krasnodar;
-        expected[2] = spb;
+        expected[2] = moscow;
+
+
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void findAllThreeElementWithEqualTrawelTime() {
+
+        RouteManager manager = new RouteManager();
+        Route moscow = new Route(123, 1800, "ALG", "DME", 120);
+        Route krasnodar = new Route(124, 2000,"ALG", "DME", 120);
+        Route spb = new Route(124, 1500,"ALG", "DME", 120);
+        manager.add(moscow);
+        manager.add(krasnodar);
+        manager.add(spb);
+
+        Comparator speedComparator = new RouteByTravelTimeAscComparator();
+
+        Route[] actual = manager.findAll("ALG", "DME", speedComparator);
+
+        Route[] expected = new Route[3];
+        expected[0] = spb;
+        expected[1] = moscow;
+        expected[2] = krasnodar;
 
         assertArrayEquals(expected, actual);
     }
@@ -69,7 +104,10 @@ class RouteManagerTest {
         manager.add(moscow);
         manager.add(krasnodar);
         manager.add(spb);
-        Route[] actual = manager.findAll("ALG", "KRR");
+
+        Comparator speedComparator = new RouteByTravelTimeAscComparator();
+
+        Route[] actual = manager.findAll("ALG", "KRR", speedComparator);
 
         Route[] expected = new Route[0];
 
